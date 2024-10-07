@@ -18,12 +18,17 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.Default()
 	api := router.Group("/api/v1")
 
-	vacancies := api.Group("/vacancies")
+	vacancies := api.Group("/vacancies").Use(gin.BasicAuth(gin.Accounts{"bib": "qwert"}))
 
 	vacancies.GET("/", h.getVacanciesByQuery)
 	vacancies.POST("/", h.createVacancy)
-	vacancies.PATCH("/:id", h.patchVacancy)
 	vacancies.GET("/search", h.searchVacancies)
+	vacancies.PATCH("/:id", h.patchVacancies)
+
+	bookmarks := api.Group("/").Use(gin.BasicAuth(gin.Accounts{"bib": "qwert"}))
+
+	bookmarks.POST("/add-bookmark", h.createBookmark)
+	bookmarks.DELETE("/delete-bookmark", h.deleteBookmark)
 
 	return router
 }

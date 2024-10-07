@@ -1,4 +1,4 @@
-package repository
+package customer
 
 import (
 	model "kis/internal/models"
@@ -16,6 +16,6 @@ func NewCustomerRepository(db *gorm.DB) *CustomerRepository {
 
 func (r *CustomerRepository) GetById(id uint) (model.Customer, error) {
 	customer := model.Customer{}
-	res := r.db.Find(&customer, id).Error
-	return customer, res
+	err := r.db.Find(&customer, id).Error
+	return customer, err
 }
